@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Zap, Thermometer, SolarPanel, Settings, Shield, Home } from "lucide-react";
+import { Zap, Thermometer, Sun, Settings, Shield, Home } from "lucide-react";
 
 const DetailedServices = () => {
   const inspectionAreas = [
@@ -15,7 +15,7 @@ const DetailedServices = () => {
       description: "Comprehensive cooling system inspections with temperature monitoring and efficiency analysis."
     },
     {
-      icon: <SolarPanel size={32} />,
+      icon: <Sun size={32} />,
       title: "Solar Panel Systems",
       description: "Solar installation assessments with performance metrics and maintenance scheduling."
     },
