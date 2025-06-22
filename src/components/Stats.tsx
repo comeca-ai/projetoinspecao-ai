@@ -1,5 +1,5 @@
 
-{/* 
+/*
 Commented out for future implementation when we have real numbers
 
 const Stats = () => {
