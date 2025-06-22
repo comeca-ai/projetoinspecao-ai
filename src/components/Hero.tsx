@@ -51,7 +51,7 @@ const Hero = () => {
               <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-8 py-3 text-lg rounded-md">
                 Começar a Usar Agora
               </Button>
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#1e2a39] px-8 py-3 text-lg rounded-md">
+              <Button variant="outline" className="border-white text-[#1e2a39] bg-white hover:bg-gray-100 hover:text-[#1e2a39] px-8 py-3 text-lg rounded-md">
                 Ver Demonstração
               </Button>
             </div>
