@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -71,8 +72,8 @@ const Hero = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="text-white border-white hover:bg-[#f26522] hover:border-[#f26522]" />
-              <CarouselNext className="text-white border-white hover:bg-[#f26522] hover:border-[#f26522]" />
+              <CarouselPrevious className="text-[#1e2a39] bg-white border-gray-300 hover:bg-[#f26522] hover:border-[#f26522] hover:text-white" />
+              <CarouselNext className="text-[#1e2a39] bg-white border-gray-300 hover:bg-[#f26522] hover:border-[#f26522] hover:text-white" />
             </Carousel>
           </div>
         </div>
