@@ -8,6 +8,7 @@ import DetailedServices from "@/components/DetailedServices";
 import PricingPlans from "@/components/PricingPlans";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const Index = () => {
   return (
@@ -21,6 +22,7 @@ const Index = () => {
       <PricingPlans />
       <Testimonials />
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 };
