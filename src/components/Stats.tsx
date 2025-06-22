@@ -1,15 +1,17 @@
 
+{/* 
+Commented out for future implementation when we have real numbers
+
 const Stats = () => {
   const stats = [
-    { number: "653", label: "Projects Done" },
-    { number: "753", label: "Team Members" },
-    { number: "428", label: "Awards Won" },
-    { number: "932", label: "Global Partners" }
+    { number: "150+", label: "Active Users" },
+    { number: "5,000+", label: "Inspections Completed" },
+    { number: "50+", label: "Companies Using" },
+    { number: "99.9%", label: "Uptime Guarantee" }
   ];
 
   return (
     <section className="py-20 bg-[#1e2a39] text-white relative overflow-hidden">
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-32 h-32 border border-white rounded-full"></div>
         <div className="absolute top-32 right-20 w-24 h-24 border border-white rounded-full"></div>
@@ -32,6 +34,14 @@ const Stats = () => {
       </div>
     </section>
   );
+};
+
+export default Stats;
+*/
+
+// Placeholder component for when stats are needed
+const Stats = () => {
+  return null;
 };
 
 export default Stats;
