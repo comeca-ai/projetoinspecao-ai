@@ -1,10 +1,7 @@
-
 import { Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 const Header = () => {
-  return (
-    <header className="bg-white shadow-sm">
+  return <header className="bg-white shadow-sm">
       {/* Top Bar */}
       <div className="bg-[#1e2a39] text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
@@ -34,7 +31,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-bold text-[#1e2a39]">
-            Electric<span className="text-[#f26522]">Pro</span>
+            Electric<span className="text-[#f26522]">Po</span>
           </div>
           
           <nav className="hidden md:flex space-x-8">
@@ -53,8 +50,6 @@ const Header = () => {
           </Button>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
