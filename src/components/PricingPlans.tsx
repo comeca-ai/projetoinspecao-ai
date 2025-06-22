@@ -6,51 +6,51 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 const PricingPlans = () => {
   const plans = [
     {
-      name: "Starter",
-      price: "$29",
-      period: "/month",
-      description: "Perfect for individual technicians",
+      name: "Iniciante",
+      price: "R$ 89",
+      period: "/mês",
+      description: "Perfeito para técnicos individuais",
       features: [
-        "5 Inspection Areas",
-        "Basic Report Generation",
-        "Mobile App Access",
-        "Cloud Storage (5GB)",
-        "Email Support",
-        "Standard Templates"
+        "5 Áreas de Inspeção",
+        "Geração Básica de Relatórios",
+        "Acesso ao App Mobile",
+        "Armazenamento na Nuvem (5GB)",
+        "Suporte por Email",
+        "Templates Padrão"
       ],
       popular: false
     },
     {
-      name: "Professional",
-      price: "$79",
-      period: "/month",
-      description: "Ideal for small to medium teams",
+      name: "Profissional",
+      price: "R$ 239",
+      period: "/mês",
+      description: "Ideal para equipes pequenas e médias",
       features: [
-        "All Inspection Areas",
-        "Advanced Reporting",
-        "Team Collaboration",
-        "Cloud Storage (50GB)",
-        "Priority Support",
-        "Custom Templates",
-        "Analytics Dashboard",
-        "API Access"
+        "Todas as Áreas de Inspeção",
+        "Relatórios Avançados",
+        "Colaboração em Equipe",
+        "Armazenamento na Nuvem (50GB)",
+        "Suporte Prioritário",
+        "Templates Personalizados",
+        "Dashboard de Análises",
+        "Acesso à API"
       ],
       popular: true
     },
     {
-      name: "Enterprise",
-      price: "$199",
-      period: "/month",
-      description: "For large organizations",
+      name: "Empresarial",
+      price: "R$ 599",
+      period: "/mês",
+      description: "Para grandes organizações",
       features: [
-        "Everything in Professional",
-        "Unlimited Storage",
-        "Custom Integrations",
-        "Dedicated Account Manager",
-        "24/7 Phone Support",
-        "Advanced Analytics",
-        "White-label Options",
-        "SSO Integration"
+        "Tudo do Profissional",
+        "Armazenamento Ilimitado",
+        "Integrações Personalizadas",
+        "Gerente de Conta Dedicado",
+        "Suporte 24/7 por Telefone",
+        "Análises Avançadas",
+        "Opções White-label",
+        "Integração SSO"
       ],
       popular: false
     }
@@ -60,9 +60,9 @@ const PricingPlans = () => {
     <section className="py-20 bg-[#f9f9f9]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1e2a39] mb-4">Choose Your Plan</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1e2a39] mb-4">Escolha Seu Plano</h2>
           <p className="text-[#7c7c7c] max-w-2xl mx-auto">
-            Select the perfect plan for your inspection needs. All plans include a 14-day free trial.
+            Selecione o plano perfeito para suas necessidades de inspeção. Todos os planos incluem 14 dias de teste grátis.
           </p>
         </div>
         
@@ -72,7 +72,7 @@ const PricingPlans = () => {
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <span className="bg-[#f26522] text-white px-4 py-2 rounded-full text-sm font-bold">
-                    Most Popular
+                    Mais Popular
                   </span>
                 </div>
               )}
@@ -103,7 +103,7 @@ const PricingPlans = () => {
                       : 'bg-white border-2 border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white'
                   }`}
                 >
-                  Start Free Trial
+                  Iniciar Teste Grátis
                 </Button>
               </CardContent>
             </Card>
@@ -111,9 +111,9 @@ const PricingPlans = () => {
         </div>
         
         <div className="text-center mt-12">
-          <p className="text-[#7c7c7c] mb-4">Need a custom solution for your organization?</p>
+          <p className="text-[#7c7c7c] mb-4">Precisa de uma solução personalizada para sua organização?</p>
           <Button variant="outline" className="border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white">
-            Contact Sales
+            Contatar Vendas
           </Button>
         </div>
       </div>

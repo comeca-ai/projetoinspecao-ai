@@ -10,30 +10,30 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">InspectionPro</h3>
             <p className="text-gray-300 mb-4">
-              The complete SaaS platform for modern inspection management across all technical areas.
+              A plataforma SaaS completa para gestão moderna de inspeções em todas as áreas técnicas.
             </p>
           </div>
           
           <div>
-            <h4 className="font-bold mb-4">Quick Links</h4>
+            <h4 className="font-bold mb-4">Links Rápidos</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-[#f26522]">Features</a></li>
-              <li><a href="#" className="hover:text-[#f26522]">Pricing</a></li>
-              <li><a href="#" className="hover:text-[#f26522]">Support</a></li>
-              <li><a href="#" className="hover:text-[#f26522]">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-[#f26522]">Recursos</a></li>
+              <li><a href="#" className="hover:text-[#f26522]">Planos</a></li>
+              <li><a href="#" className="hover:text-[#f26522]">Suporte</a></li>
+              <li><a href="#" className="hover:text-[#f26522]">Política de Privacidade</a></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="font-bold mb-4">Contact</h4>
+            <h4 className="font-bold mb-4">Contato</h4>
             <div className="space-y-2 text-gray-300">
               <div className="flex items-center space-x-2">
                 <Mail size={16} />
-                <span>support@inspectionpro.com</span>
+                <span>suporte@inspectionpro.com.br</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={16} />
-                <span>+1 (555) 123-4567</span>
+                <span>+55 (11) 99999-9999</span>
               </div>
             </div>
           </div>
@@ -41,7 +41,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-600 pt-6 text-center">
           <p className="text-gray-300">
-            © 2024 InspectionPro. All rights reserved. | Professional Inspection Management SaaS
+            © 2024 InspectionPro. Todos os direitos reservados. | Plataforma SaaS de Gestão Profissional de Inspeções
           </p>
         </div>
       </div>

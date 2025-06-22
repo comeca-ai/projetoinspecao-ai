@@ -11,11 +11,11 @@ const Header = () => {
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <Phone size={14} />
-              <span>+1 (555) 123-4567</span>
+              <span>+55 (11) 99999-9999</span>
             </div>
             <div className="flex items-center space-x-2">
               <Mail size={14} />
-              <span>info@inspectionpro.com</span>
+              <span>contato@inspectionpro.com.br</span>
             </div>
           </div>
           <div className="flex items-center space-x-4">
@@ -25,7 +25,7 @@ const Header = () => {
               <Linkedin size={16} className="hover:text-[#f26522] cursor-pointer transition-colors" />
               <Instagram size={16} className="hover:text-[#f26522] cursor-pointer transition-colors" />
             </div>
-            <span className="text-xs cursor-pointer hover:text-[#f26522]">Login</span>
+            <span className="text-xs cursor-pointer hover:text-[#f26522]">Entrar</span>
           </div>
         </div>
       </div>
@@ -38,17 +38,17 @@ const Header = () => {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Home</a>
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Features</a>
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Inspection Areas</a>
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Pricing</a>
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Testimonials</a>
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Portfolio</a>
-            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Support</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Início</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Recursos</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Áreas de Inspeção</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Planos</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Depoimentos</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Portfólio</a>
+            <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Suporte</a>
           </nav>
 
           <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-6 py-2 rounded-md">
-            Register Now
+            Registrar Agora
           </Button>
         </div>
       </div>

@@ -6,18 +6,18 @@ const ServicesOverview = () => {
   const inspectionAreas = [
     {
       icon: <Zap size={48} />,
-      title: "Electrical Inspection",
-      description: "Comprehensive electrical system inspections with automated reporting and compliance tracking."
+      title: "Inspeção Elétrica",
+      description: "Inspeções abrangentes de sistemas elétricos com relatórios automatizados e rastreamento de conformidade."
     },
     {
       icon: <Thermometer size={48} />,
-      title: "Refrigeration Systems",
-      description: "Complete HVAC and refrigeration system inspection tools with temperature monitoring."
+      title: "Sistemas de Refrigeração",
+      description: "Ferramentas completas de inspeção HVAC e refrigeração com monitoramento de temperatura."
     },
     {
       icon: <Sun size={48} />,
-      title: "Solar Panel Assessment",
-      description: "Solar installation inspections with performance analysis and maintenance recommendations."
+      title: "Avaliação de Painéis Solares",
+      description: "Inspeções de instalações solares com análise de desempenho e recomendações de manutenção."
     }
   ];
 
@@ -25,9 +25,9 @@ const ServicesOverview = () => {
     <section className="py-20 bg-[#f9f9f9]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1e2a39] mb-4">Primary Inspection Areas</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1e2a39] mb-4">Principais Áreas de Inspeção</h2>
           <p className="text-[#7c7c7c] max-w-2xl mx-auto">
-            Our SaaS platform covers all major inspection areas that technicians and engineers need for comprehensive project management.
+            Nossa plataforma SaaS cobre todas as principais áreas de inspeção que técnicos e engenheiros precisam para gestão abrangente de projetos.
           </p>
         </div>
         

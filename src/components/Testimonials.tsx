@@ -5,16 +5,16 @@ import { Star } from "lucide-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      title: "Homeowner",
+      name: "Maria Silva",
+      title: "Engenheira Elétrica",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
-      text: "ElectricPro did an amazing job rewiring our entire house. Professional, clean work, and completed on time. Highly recommend their services!"
+      text: "O InspectionPro revolucionou nosso processo de inspeção. A plataforma é intuitiva e os relatórios automatizados economizam horas de trabalho. Recomendo fortemente!"
     },
     {
-      name: "Michael Chen",
-      title: "Business Owner", 
+      name: "João Santos",
+      title: "Técnico em Refrigeração", 
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
-      text: "Their emergency response saved our business when we had electrical issues. Quick, efficient, and reasonably priced. Will definitely use again."
+      text: "Excelente ferramenta para gestão de inspeções. O suporte técnico é excepcional e a funcionalidade mobile nos permite trabalhar em campo com muito mais eficiência."
     }
   ];
 
@@ -22,9 +22,9 @@ const Testimonials = () => {
     <section className="py-20 bg-[#f9f9f9]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1e2a39] mb-4">What Our Clients Say</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#1e2a39] mb-4">O Que Nossos Clientes Dizem</h2>
           <p className="text-[#7c7c7c] max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our satisfied customers have to say about our services.
+            Não acredite apenas na nossa palavra. Veja o que nossos clientes satisfeitos têm a dizer sobre nossos serviços.
           </p>
         </div>
         
