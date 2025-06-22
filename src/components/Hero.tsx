@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -11,20 +10,20 @@ import {
 const Hero = () => {
   const carouselImages = [
     {
-      src: "/lovable-uploads/ce427a55-d933-4cfd-a2b9-6af818ef17fa.png",
-      alt: "Técnico usando tablet para diagnóstico de sistema elétrico"
+      src: "/lovable-uploads/b0e15d53-b445-47f7-b29d-6a0357d40224.png",
+      alt: "Técnico usando tablet para diagnóstico de sistema elétrico em painel industrial"
     },
     {
-      src: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Circuito eletrônico sendo inspecionado"
+      src: "/lovable-uploads/07fde259-867f-47d3-ac65-96c0f4170cbf.png",
+      alt: "Técnico usando câmera térmica para inspeção de equipamentos industriais"
     },
     {
-      src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Técnico usando laptop para análise de dados"
+      src: "/lovable-uploads/80df8c40-4c15-4b67-9f45-f58ab052b06d.png",
+      alt: "Técnico com capacete de segurança fazendo anotações em tablet durante inspeção"
     },
     {
-      src: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      alt: "Equipe técnica analisando displays de monitoramento"
+      src: "/lovable-uploads/5d728456-340e-454a-b3d2-2366ded4551c.png",
+      alt: "Técnico inspecionando painéis solares com drone para monitoramento"
     }
   ];
 
