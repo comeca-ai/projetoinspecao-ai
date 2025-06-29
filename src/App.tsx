@@ -28,6 +28,11 @@ import Analytics from "@/pages/gestor/Analytics";
 import Billing from "@/pages/gestor/Billing";
 import TeamInspections from "@/pages/gestor/TeamInspections";
 
+// Admin pages
+import ClientManagement from "@/pages/admin/ClientManagement";
+import SystemOverview from "@/pages/admin/SystemOverview";
+import VoiceLogs from "@/pages/admin/VoiceLogs";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -126,7 +131,25 @@ const App = () => (
               path="/admin/clients"
               element={
                 <ProtectedRoute roles={['admin']}>
-                  <div className="p-6">Página de Clientes Admin (Em desenvolvimento)</div>
+                  <ClientManagement />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/admin/system"
+              element={
+                <ProtectedRoute roles={['admin']}>
+                  <SystemOverview />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/admin/voice-logs"
+              element={
+                <ProtectedRoute roles={['admin']}>
+                  <VoiceLogs />
                 </ProtectedRoute>
               }
             />
