@@ -60,9 +60,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Mock user based on email for demo
+      // Mock user based on email for demo - simplified logic
       let mockUser: User;
-      if (credentials.email.includes('admin')) {
+      
+      if (credentials.email.toLowerCase().includes('admin')) {
         mockUser = {
           id: '1',
           email: credentials.email,
@@ -71,7 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           plano: 'enterprise',
           created_at: new Date().toISOString(),
         };
-      } else if (credentials.email.includes('gestor')) {
+      } else if (credentials.email.toLowerCase().includes('gestor')) {
         mockUser = {
           id: '2',
           email: credentials.email,
@@ -83,6 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           created_at: new Date().toISOString(),
         };
       } else {
+        // Default to inspetor for any other email
         mockUser = {
           id: '3',
           email: credentials.email,
@@ -105,8 +107,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setState({
         user: null,
         loading: false,
-        error: 'Credenciais inválidas',
+        error: 'Erro ao fazer login. Tente novamente.',
       });
+      throw error;
     }
   };
 
@@ -136,8 +139,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setState({
         user: null,
         loading: false,
-        error: 'Erro ao criar conta',
+        error: 'Erro ao criar conta. Tente novamente.',
       });
+      throw error;
     }
   };
 

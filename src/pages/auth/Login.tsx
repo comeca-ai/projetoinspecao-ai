@@ -24,7 +24,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       await login(formData);
-      // Navigation will be handled by the route protection
+      navigate('/dashboard');
     } catch (err) {
       // Error is handled by the context
     }
@@ -32,6 +32,10 @@ const Login: React.FC = () => {
 
   const handleInputChange = (field: keyof LoginCredentials, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleDemoLogin = (email: string) => {
+    setFormData(prev => ({ ...prev, email, password: 'demo123' }));
   };
 
   return (
@@ -137,14 +141,43 @@ const Login: React.FC = () => {
         </div>
         
         {/* Demo credentials helper */}
-        <div className="mt-6 p-3 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-600 mb-2 font-medium">Contas de demonstração:</p>
-          <div className="text-xs text-gray-500 space-y-1">
-            <p><strong>Admin:</strong> admin@demo.com</p>
-            <p><strong>Gestor:</strong> gestor@demo.com</p>
-            <p><strong>Inspetor:</strong> inspetor@demo.com</p>
-            <p className="mt-1"><em>Senha: qualquer valor</em></p>
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <p className="text-xs text-gray-600 mb-3 font-medium">Contas de demonstração (clique para preencher):</p>
+          <div className="space-y-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full justify-start text-xs"
+              onClick={() => handleDemoLogin('admin@demo.com')}
+              disabled={loading}
+            >
+              <strong className="mr-2">Admin:</strong> admin@demo.com
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full justify-start text-xs"
+              onClick={() => handleDemoLogin('gestor@demo.com')}
+              disabled={loading}
+            >
+              <strong className="mr-2">Gestor:</strong> gestor@demo.com
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full justify-start text-xs"
+              onClick={() => handleDemoLogin('inspetor@demo.com')}
+              disabled={loading}
+            >
+              <strong className="mr-2">Inspetor:</strong> inspetor@demo.com
+            </Button>
           </div>
+          <p className="text-xs text-gray-500 mt-2">
+            <em>Qualquer senha funciona para demonstração</em>
+          </p>
         </div>
       </form>
     </AuthLayout>
