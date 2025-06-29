@@ -123,6 +123,34 @@ const mockTests: Test[] = [
       'Inspecione conexões',
       'Documente anomalias'
     ]
+  },
+  // Security Tests
+  {
+    id: 'sec-001',
+    name: 'Teste de Alarme',
+    category: 'Segurança',
+    description: 'Verificação do sistema de alarme',
+    required: true,
+    estimated_time: 20,
+    instructions: [
+      'Teste sensores de movimento',
+      'Verifique sirenes',
+      'Teste comunicação central'
+    ]
+  },
+  // Automation Tests
+  {
+    id: 'auto-001',
+    name: 'Teste de Automação',
+    category: 'Automação',
+    description: 'Verificação de sistemas automatizados',
+    required: false,
+    estimated_time: 25,
+    instructions: [
+      'Teste programação',
+      'Verifique sensores',
+      'Teste comunicação'
+    ]
   }
 ];
 
@@ -153,10 +181,27 @@ const TestLibrary: React.FC<TestLibraryProps> = ({ onTestDrop }) => {
 
   const handleDragStart = (e: React.DragEvent, test: Test) => {
     e.dataTransfer.setData('application/json', JSON.stringify(test));
+    e.dataTransfer.effectAllowed = 'copy';
+    
+    // Add visual feedback
+    const dragImage = e.currentTarget.cloneNode(true) as HTMLElement;
+    dragImage.style.opacity = '0.8';
+    dragImage.style.transform = 'rotate(5deg)';
+    document.body.appendChild(dragImage);
+    e.dataTransfer.setDragImage(dragImage, 0, 0);
+    
+    // Clean up after drag
+    setTimeout(() => {
+      document.body.removeChild(dragImage);
+    }, 0);
+  };
+
+  const handleTestClick = (test: Test) => {
+    onTestDrop(test);
   };
 
   return (
-    <Card className="h-fit">
+    <Card className="h-fit sticky top-24">
       <CardHeader>
         <CardTitle className="text-lg">Biblioteca de Testes</CardTitle>
         
@@ -192,6 +237,10 @@ const TestLibrary: React.FC<TestLibraryProps> = ({ onTestDrop }) => {
       </CardHeader>
 
       <CardContent className="space-y-2 max-h-96 overflow-y-auto">
+        <div className="text-xs text-gray-500 mb-3 p-2 bg-blue-50 rounded">
+          💡 <strong>Dica:</strong> Arraste os testes para o painel de execução ou clique para adicionar
+        </div>
+        
         {filteredTests.map((test) => {
           const Icon = getCategoryIcon(test.category);
           return (
@@ -199,8 +248,9 @@ const TestLibrary: React.FC<TestLibraryProps> = ({ onTestDrop }) => {
               key={test.id}
               draggable
               onDragStart={(e) => handleDragStart(e, test)}
-              className="p-3 border rounded-lg cursor-move hover:bg-gray-50 transition-colors"
-              onClick={() => onTestDrop(test)}
+              onClick={() => handleTestClick(test)}
+              className="p-3 border rounded-lg cursor-move hover:bg-gray-50 hover:border-[#f26522] transition-all duration-200 hover:shadow-md"
+              title="Arraste para o painel ou clique para adicionar"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">

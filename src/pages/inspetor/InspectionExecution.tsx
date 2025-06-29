@@ -61,10 +61,19 @@ const InspectionExecution: React.FC = () => {
   };
 
   const handleTestDrop = (test: Test) => {
+    // Check if test is already added
+    const existingTest = activeTests.find(activeTest => activeTest.test.id === test.id);
+    if (existingTest) {
+      // Show a brief notification that test is already added
+      console.log('Test already added:', test.name);
+      return;
+    }
+
     const newActiveTest: ActiveTest = {
-      id: `active-${Date.now()}`,
+      id: `active-${Date.now()}-${test.id}`,
       test,
-      status: 'pending'
+      status: 'pending',
+      startTime: new Date()
     };
     setActiveTests(prev => [...prev, newActiveTest]);
   };
@@ -76,7 +85,8 @@ const InspectionExecution: React.FC = () => {
             ...test, 
             status, 
             result,
-            endTime: status === 'completed' || status === 'failed' ? new Date() : test.endTime
+            endTime: status === 'completed' || status === 'failed' ? new Date() : test.endTime,
+            startTime: status === 'in_progress' && !test.startTime ? new Date() : test.startTime
           }
         : test
     ));
@@ -97,6 +107,17 @@ const InspectionExecution: React.FC = () => {
     }
     setIsObservationModalOpen(false);
     setSelectedTestForObservation(null);
+  };
+
+  const handleRemoveTest = (testId: string) => {
+    setActiveTests(prev => prev.filter(test => test.id !== testId));
+  };
+
+  const handleVoiceCommand = (command: string) => {
+    console.log('Voice command received:', command);
+    // Here you would implement the voice command processing
+    // For now, just close the assistant
+    setIsVoiceAssistantOpen(false);
   };
 
   const getProgress = () => {
@@ -124,7 +145,7 @@ const InspectionExecution: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/dashboard">
+            <Link to="/inspections">
               <Button variant="outline" size="sm">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Voltar
@@ -199,9 +220,7 @@ const InspectionExecution: React.FC = () => {
               activeTests={activeTests}
               onTestStatusChange={handleTestStatusChange}
               onAddObservation={handleAddObservation}
-              onRemoveTest={(testId) => 
-                setActiveTests(prev => prev.filter(test => test.id !== testId))
-              }
+              onRemoveTest={handleRemoveTest}
             />
           </div>
         </div>
@@ -210,10 +229,7 @@ const InspectionExecution: React.FC = () => {
         <VoiceAssistant
           isOpen={isVoiceAssistantOpen}
           onClose={() => setIsVoiceAssistantOpen(false)}
-          onCommand={(command) => {
-            console.log('Voice command:', command);
-            // Handle voice commands here
-          }}
+          onCommand={handleVoiceCommand}
         />
 
         {/* Observation Modal */}

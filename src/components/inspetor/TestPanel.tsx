@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,7 +12,8 @@ import {
   FileText, 
   Camera,
   Trash2,
-  AlertCircle
+  AlertCircle,
+  GripVertical
 } from 'lucide-react';
 
 interface Test {
@@ -49,13 +50,37 @@ const TestPanel: React.FC<TestPanelProps> = ({
   onAddObservation,
   onRemoveTest
 }) => {
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('border-[#f26522]', 'bg-orange-50');
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-[#f26522]', 'bg-orange-50');
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    // This would be handled by the parent component
+    e.currentTarget.classList.remove('border-[#f26522]', 'bg-orange-50');
+    
+    try {
+      const testData = e.dataTransfer.getData('application/json');
+      if (testData) {
+        const test = JSON.parse(testData);
+        // This would be handled by the parent component through onTestDrop
+        console.log('Test dropped:', test);
+      }
+    } catch (error) {
+      console.error('Error parsing dropped test data:', error);
+    }
   };
 
   const getStatusBadge = (status: ActiveTest['status']) => {
@@ -84,16 +109,21 @@ const TestPanel: React.FC<TestPanelProps> = ({
   if (activeTests.length === 0) {
     return (
       <Card 
-        className="min-h-96 border-2 border-dashed border-gray-300 flex items-center justify-center"
+        className="min-h-96 border-2 border-dashed border-gray-300 flex items-center justify-center transition-all duration-200"
         onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
         <div className="text-center text-gray-500">
           <FileText className="mx-auto h-12 w-12 mb-4" />
           <h3 className="text-lg font-medium mb-2">Área de Execução de Testes</h3>
-          <p className="text-sm">
+          <p className="text-sm mb-2">
             Arraste testes da biblioteca para começar a inspeção
           </p>
+          <div className="text-xs text-gray-400 bg-gray-100 p-2 rounded inline-block">
+            💡 Você também pode clicar nos testes da biblioteca para adicioná-los
+          </div>
         </div>
       </Card>
     );
@@ -101,15 +131,31 @@ const TestPanel: React.FC<TestPanelProps> = ({
 
   return (
     <div className="space-y-4">
+      {/* Drop zone indicator when dragging */}
+      <Card 
+        className="border-2 border-dashed border-gray-200 p-4 text-center text-gray-400 transition-all duration-200"
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <div className="text-sm">
+          ⬇️ Solte aqui para adicionar novo teste
+        </div>
+      </Card>
+
       {activeTests.map((activeTest, index) => (
         <Card key={activeTest.id} className="relative">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">
-                    #{index + 1}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <GripVertical className="h-4 w-4 text-gray-400 cursor-move" />
+                    <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">
+                      #{index + 1}
+                    </span>
+                  </div>
                   <CardTitle className="text-lg">{activeTest.test.name}</CardTitle>
                   {getStatusBadge(activeTest.status)}
                 </div>
@@ -156,7 +202,7 @@ const TestPanel: React.FC<TestPanelProps> = ({
             </div>
 
             {/* Test Controls */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               {activeTest.status === 'pending' && (
                 <Button
                   onClick={() => onTestStatusChange(activeTest.id, 'in_progress')}

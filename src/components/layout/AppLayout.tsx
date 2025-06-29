@@ -19,7 +19,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 ml-64 p-6">
+        <main className="flex-1 ml-64 p-6 pt-24">
           {children}
         </main>
       </div>
