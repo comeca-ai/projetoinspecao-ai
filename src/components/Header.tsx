@@ -1,6 +1,6 @@
-
 import { Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -25,7 +25,12 @@ const Header = () => {
               <Linkedin size={16} className="hover:text-[#f26522] cursor-pointer transition-colors" />
               <Instagram size={16} className="hover:text-[#f26522] cursor-pointer transition-colors" />
             </div>
-            <span className="text-xs cursor-pointer hover:text-[#f26522]">Entrar</span>
+            <Link
+              to="/auth/login"
+              className="text-xs cursor-pointer hover:text-[#f26522] transition-colors"
+            >
+              Entrar
+            </Link>
           </div>
         </div>
       </div>
@@ -47,9 +52,21 @@ const Header = () => {
             <a href="#" className="text-gray-700 hover:text-[#f26522] transition-colors">Suporte</a>
           </nav>
 
-          <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-6 py-2 rounded-md">
-            Registrar Agora
-          </Button>
+          <div className="flex items-center space-x-3">
+            <Link to="/auth/login">
+              <Button 
+                variant="outline" 
+                className="border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white px-4 py-2 rounded-md"
+              >
+                Login
+              </Button>
+            </Link>
+            <Link to="/auth/register">
+              <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-6 py-2 rounded-md">
+                Registrar Agora
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </header>

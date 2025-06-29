@@ -1,6 +1,6 @@
-
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const features = [
@@ -46,9 +46,11 @@ const About = () => {
               ))}
             </div>
             
-            <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-8 py-3 text-lg rounded-md">
-              Iniciar Teste Grátis
-            </Button>
+            <Link to="/auth/register">
+              <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-8 py-3 text-lg rounded-md">
+                Iniciar Teste Grátis
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

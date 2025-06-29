@@ -1,5 +1,5 @@
-
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -48,12 +48,16 @@ const Hero = () => {
               Nossa plataforma ajuda técnicos e engenheiros a trabalhar com mais eficiência e precisão.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-8 py-3 text-lg rounded-md">
-                Começar a Usar Agora
-              </Button>
-              <Button variant="outline" className="border-white text-[#1e2a39] bg-white hover:bg-gray-100 hover:text-[#1e2a39] px-8 py-3 text-lg rounded-md">
-                Ver Demonstração
-              </Button>
+              <Link to="/auth/register">
+                <Button className="bg-[#f26522] hover:bg-[#e55a1f] text-white px-8 py-3 text-lg rounded-md">
+                  Começar a Usar Agora
+                </Button>
+              </Link>
+              <Link to="/auth/register">
+                <Button variant="outline" className="border-white text-[#1e2a39] bg-white hover:bg-gray-100 hover:text-[#1e2a39] px-8 py-3 text-lg rounded-md">
+                  Ver Demonstração
+                </Button>
+              </Link>
             </div>
           </div>
           

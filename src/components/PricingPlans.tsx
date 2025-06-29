@@ -1,7 +1,7 @@
-
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const PricingPlans = () => {
   const plans = [
@@ -96,15 +96,17 @@ const PricingPlans = () => {
                   ))}
                 </ul>
                 
-                <Button 
-                  className={`w-full py-3 rounded-md ${
-                    plan.popular 
-                      ? 'bg-[#f26522] hover:bg-[#e55a1f] text-white' 
-                      : 'bg-white border-2 border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white'
-                  }`}
-                >
-                  Iniciar Teste Grátis
-                </Button>
+                <Link to="/auth/register">
+                  <Button 
+                    className={`w-full py-3 rounded-md ${
+                      plan.popular 
+                        ? 'bg-[#f26522] hover:bg-[#e55a1f] text-white' 
+                        : 'bg-white border-2 border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white'
+                    }`}
+                  >
+                    Iniciar Teste Grátis
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
@@ -112,9 +114,11 @@ const PricingPlans = () => {
         
         <div className="text-center mt-12">
           <p className="text-[#7c7c7c] mb-4">Precisa de uma solução personalizada para sua organização?</p>
-          <Button variant="outline" className="border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white">
-            Contatar Vendas
-          </Button>
+          <Link to="/auth/register">
+            <Button variant="outline" className="border-[#f26522] text-[#f26522] hover:bg-[#f26522] hover:text-white">
+              Contatar Vendas
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
