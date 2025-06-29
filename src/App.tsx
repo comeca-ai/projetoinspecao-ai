@@ -21,6 +21,13 @@ import NotFound from "@/pages/NotFound";
 import InspetorDashboard from "@/pages/inspetor/Dashboard";
 import InspectionExecution from "@/pages/inspetor/InspectionExecution";
 
+// Gestor pages
+import TeamDashboard from "@/pages/gestor/TeamDashboard";
+import TemplateManager from "@/pages/gestor/TemplateManager";
+import Analytics from "@/pages/gestor/Analytics";
+import Billing from "@/pages/gestor/Billing";
+import TeamInspections from "@/pages/gestor/TeamInspections";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -68,16 +75,53 @@ const App = () => (
               }
             />
             
-            {/* Placeholder routes for future implementation */}
+            {/* Gestor routes */}
             <Route
               path="/team"
               element={
                 <ProtectedRoute roles={['gestor']}>
-                  <div className="p-6">Página de Equipe (Em desenvolvimento)</div>
+                  <TeamDashboard />
                 </ProtectedRoute>
               }
             />
             
+            <Route
+              path="/team-inspections"
+              element={
+                <ProtectedRoute roles={['gestor']}>
+                  <TeamInspections />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/templates"
+              element={
+                <ProtectedRoute roles={['gestor']}>
+                  <TemplateManager />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/analytics"
+              element={
+                <ProtectedRoute roles={['gestor']}>
+                  <Analytics />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/billing"
+              element={
+                <ProtectedRoute roles={['gestor']}>
+                  <Billing />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* Admin routes */}
             <Route
               path="/admin/clients"
               element={
