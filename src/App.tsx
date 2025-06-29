@@ -13,6 +13,7 @@ import ForgotPassword from "@/pages/auth/ForgotPassword";
 
 // App pages
 import Dashboard from "@/pages/Dashboard";
+import Index from "@/pages/Index";
 import Unauthorized from "@/pages/Unauthorized";
 import NotFound from "@/pages/NotFound";
 
@@ -26,6 +27,9 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            {/* Landing page */}
+            <Route path="/" element={<Index />} />
+            
             {/* Public routes */}
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
@@ -71,7 +75,6 @@ const App = () => (
             
             {/* Utility routes */}
             <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
