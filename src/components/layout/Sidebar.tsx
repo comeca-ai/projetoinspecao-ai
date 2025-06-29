@@ -13,7 +13,7 @@ import {
   Shield,
   Database,
   Mic,
-  CreditCard,
+  Activity,
 } from 'lucide-react';
 
 interface NavItem {
@@ -53,26 +53,20 @@ const navItems: NavItem[] = [
   },
   {
     title: 'Inspeções da Equipe',
-    href: '/team-inspections',
+    href: '/gestor/team',
     icon: ClipboardList,
     roles: ['gestor'],
   },
   {
     title: 'Templates',
-    href: '/templates',
+    href: '/gestor/templates',
     icon: LayoutTemplate,
     roles: ['gestor'],
   },
   {
     title: 'Analytics',
-    href: '/analytics',
+    href: '/reports',
     icon: BarChart3,
-    roles: ['gestor'],
-  },
-  {
-    title: 'Planos & Cobrança',
-    href: '/billing',
-    icon: CreditCard,
     roles: ['gestor'],
   },
   
@@ -93,6 +87,12 @@ const navItems: NavItem[] = [
     title: 'Logs de Voz',
     href: '/admin/voice-logs',
     icon: Mic,
+    roles: ['admin'],
+  },
+  {
+    title: 'Monitoramento',
+    href: '/admin/monitoring',
+    icon: Activity,
     roles: ['admin'],
   },
   

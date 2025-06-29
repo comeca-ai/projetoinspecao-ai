@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import AppLayout from '@/components/layout/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -90,6 +91,7 @@ const mockInspections: Inspection[] = [
 
 const InspetorDashboard: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -124,7 +126,10 @@ const InspetorDashboard: React.FC = () => {
               Gerencie suas inspeções e acompanhe o progresso
             </p>
           </div>
-          <Button className="bg-[#f26522] hover:bg-[#e55a1f]">
+          <Button 
+            className="bg-[#f26522] hover:bg-[#e55a1f]"
+            onClick={() => navigate('/inspections/new')}
+          >
             <Plus className="mr-2 h-4 w-4" />
             Nova Inspeção
           </Button>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/components/ui/use-toast';
+import { useVoiceAssistant } from '@/contexts/VoiceAssistantContext';
 import { 
   Mic, 
   MicOff, 
@@ -10,7 +12,8 @@ import {
   CheckCircle, 
   AlertCircle,
   Clock,
-  Loader2
+  Loader2,
+  Settings
 } from 'lucide-react';
 
 interface VoiceCommand {
@@ -29,11 +32,31 @@ interface VoiceAssistantProps {
 }
 
 const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isOpen, onClose, onCommand }) => {
-  const [isListening, setIsListening] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [currentTranscription, setCurrentTranscription] = useState('');
-  const [commandHistory, setCommandHistory] = useState<VoiceCommand[]>([]);
-  const [audioLevel, setAudioLevel] = useState(0);
+  const { toast } = useToast();
+  const { 
+    isListening: contextListening,
+    isProcessing: contextProcessing,
+    currentTranscription: contextTranscription,
+    commandHistory: contextHistory,
+    audioLevel: contextAudioLevel,
+    startListening: contextStartListening,
+    stopListening: contextStopListening,
+    error
+  } = useVoiceAssistant();
+
+  // Use local state as fallback when context is not available
+  const [localListening, setLocalListening] = useState(false);
+  const [localProcessing, setLocalProcessing] = useState(false);
+  const [localTranscription, setLocalTranscription] = useState('');
+  const [localHistory, setLocalHistory] = useState<VoiceCommand[]>([]);
+  const [localAudioLevel, setLocalAudioLevel] = useState(0);
+
+  // Use context values if available, otherwise fallback to local state
+  const isListening = contextListening ?? localListening;
+  const isProcessing = contextProcessing ?? localProcessing;
+  const currentTranscription = contextTranscription ?? localTranscription;
+  const commandHistory = contextHistory ?? localHistory;
+  const audioLevel = contextAudioLevel ?? localAudioLevel;
 
   // Mock voice commands for demonstration
   const mockCommands: VoiceCommand[] = [
@@ -64,66 +87,94 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ isOpen, onClose, onComm
   ];
 
   useEffect(() => {
-    if (isOpen) {
-      setCommandHistory(mockCommands);
+    if (isOpen && localHistory.length === 0) {
+      setLocalHistory(mockCommands);
     }
   }, [isOpen]);
 
-  // Simulate audio level for visual feedback
+  // Simulate audio level for visual feedback when using local state
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isListening) {
+    if (isListening && !contextListening) {
       interval = setInterval(() => {
-        setAudioLevel(Math.random() * 100);
+        setLocalAudioLevel(Math.random() * 100);
       }, 100);
-    } else {
-      setAudioLevel(0);
+    } else if (!contextListening) {
+      setLocalAudioLevel(0);
     }
     return () => clearInterval(interval);
-  }, [isListening]);
+  }, [isListening, contextListening]);
+
+  // Show errors from context
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Erro no Assistente de Voz",
+        description: error,
+        variant: "destructive"
+      });
+    }
+  }, [error, toast]);
 
   const startListening = () => {
-    setIsListening(true);
-    setCurrentTranscription('');
-    
-    // Simulate voice recognition
-    setTimeout(() => {
-      setCurrentTranscription('Ouvindo...');
-    }, 500);
-    
-    setTimeout(() => {
-      setCurrentTranscription('adicionar teste de isolamento');
-    }, 2000);
+    if (contextStartListening) {
+      // Use context method if available
+      contextStartListening();
+      toast({
+        title: "Assistente de Voz Ativado",
+        description: "Comece a falar seu comando...",
+      });
+    } else {
+      // Fallback to local simulation
+      setLocalListening(true);
+      setLocalTranscription('');
+      
+      setTimeout(() => {
+        setLocalTranscription('Ouvindo...');
+      }, 500);
+      
+      setTimeout(() => {
+        setLocalTranscription('adicionar teste de isolamento');
+      }, 2000);
+    }
   };
 
   const stopListening = () => {
-    setIsListening(false);
-    setIsProcessing(true);
-    
-    // Simulate processing
-    setTimeout(() => {
-      const newCommand: VoiceCommand = {
-        id: Date.now().toString(),
-        timestamp: new Date(),
-        originalText: currentTranscription,
-        interpretedAction: 'Adicionar teste: Medição de Isolamento',
-        status: 'processing'
-      };
+    if (contextStopListening) {
+      // Use context method if available
+      contextStopListening();
+    } else {
+      // Fallback to local simulation
+      setLocalListening(false);
+      setLocalProcessing(true);
       
-      setCommandHistory(prev => [newCommand, ...prev]);
-      setIsProcessing(false);
-      setCurrentTranscription('');
-      
-      // Simulate command execution
       setTimeout(() => {
-        setCommandHistory(prev => prev.map(cmd => 
-          cmd.id === newCommand.id 
-            ? { ...cmd, status: 'success' as const, result: 'Teste adicionado com sucesso' }
-            : cmd
-        ));
-        onCommand(currentTranscription);
-      }, 1000);
-    }, 2000);
+        const newCommand: VoiceCommand = {
+          id: Date.now().toString(),
+          timestamp: new Date(),
+          originalText: currentTranscription,
+          interpretedAction: 'Adicionar teste: Medição de Isolamento',
+          status: 'processing'
+        };
+        
+        setLocalHistory(prev => [newCommand, ...prev]);
+        setLocalProcessing(false);
+        setLocalTranscription('');
+        
+        setTimeout(() => {
+          setLocalHistory(prev => prev.map(cmd => 
+            cmd.id === newCommand.id 
+              ? { ...cmd, status: 'success' as const, result: 'Teste adicionado com sucesso' }
+              : cmd
+          ));
+          onCommand(currentTranscription);
+          toast({
+            title: "Comando Processado",
+            description: "Teste adicionado com sucesso",
+          });
+        }, 1000);
+      }, 2000);
+    }
   };
 
   const getStatusIcon = (status: VoiceCommand['status']) => {

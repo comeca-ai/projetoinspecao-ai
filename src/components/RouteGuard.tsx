@@ -62,7 +62,7 @@ export const RouteGuard: React.FC<RouteGuardProps> = ({
   actionContext,
   feature,
   requireAuth = true,
-  redirectTo = '/login',
+  redirectTo = '/auth/login',
   children,
 }) => {
   const { user, isLoading } = useAuth();

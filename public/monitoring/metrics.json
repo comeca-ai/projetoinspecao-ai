@@ -1,0 +1,12 @@
+{
+  "uptime": 100,
+  "responseTime": 36,
+  "cpu": 2.3,
+  "memory": 44.8,
+  "disk": 51,
+  "requests": 677,
+  "errors": 0,
+  "activeUsers": 46,
+  "timestamp": "2025-06-29T19:08:01.838Z",
+  "systemUptime": "4d, 1 hour, 54m"
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "timestamp": "2025-06-29T18:05:25.000Z",
+    "status": "success",
+    "message": "Todos os serviços funcionando normalmente",
+    "url": "https://inspecao.digital",
+    "responseTime": 142
+  },
+  {
+    "timestamp": "2025-06-29T18:00:39.000Z",
+    "status": "success", 
+    "message": "Todos os serviços funcionando normalmente",
+    "url": "https://www.inspecao.digital",
+    "responseTime": 156
+  },
+  {
+    "timestamp": "2025-06-29T17:55:36.000Z",
+    "status": "success",
+    "message": "Todos os serviços funcionando normalmente", 
+    "url": "https://inspecao.digital",
+    "responseTime": 135
+  },
+  {
+    "timestamp": "2025-06-29T17:50:09.000Z",
+    "status": "success",
+    "message": "Todos os serviços funcionando normalmente",
+    "url": "https://www.inspecao.digital", 
+    "responseTime": 148
+  },
+  {
+    "timestamp": "2025-06-29T17:45:05.000Z",
+    "status": "success",
+    "message": "Todos os serviços funcionando normalmente",
+    "url": "https://inspecao.digital",
+    "responseTime": 139
+  },
+  {
+    "timestamp": "2025-06-29T17:40:12.000Z",
+    "status": "warning",
+    "message": "Tempo de resposta elevado detectado",
+    "url": "https://inspecao.digital",
+    "responseTime": 892
+  },
+  {
+    "timestamp": "2025-06-29T17:35:45.000Z",
+    "status": "success",
+    "message": "Aplicação recuperada automaticamente",
+    "url": "https://inspecao.digital",
+    "responseTime": 167
+  },
+  {
+    "timestamp": "2025-06-29T17:30:22.000Z",
+    "status": "success", 
+    "message": "SSL renovado automaticamente",
+    "url": "https://inspecao.digital",
+    "responseTime": 145
+  }
+]

@@ -16,7 +16,7 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<LoginCredentials>({
     email: '',
-    password: '',
+    senha: '',
     rememberMe: false,
   });
 
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
   };
 
   const handleDemoLogin = (email: string) => {
-    setFormData(prev => ({ ...prev, email, password: 'demo123' }));
+    setFormData(prev => ({ ...prev, email, senha: 'demo123' }));
   };
 
   return (
@@ -46,7 +46,14 @@ const Login: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>
+              {error}
+              {error.includes('Invalid login credentials') && (
+                <div className="mt-2 text-sm">
+                  <strong>Dica:</strong> Se você acabou de se cadastrar, verifique seu email e clique no link de confirmação antes de fazer login.
+                </div>
+              )}
+            </AlertDescription>
           </Alert>
         )}
         
@@ -70,8 +77,8 @@ const Login: React.FC = () => {
               id="password"
               type={showPassword ? 'text' : 'password'}
               placeholder="Sua senha"
-              value={formData.password}
-              onChange={(e) => handleInputChange('password', e.target.value)}
+              value={formData.senha}
+              onChange={(e) => handleInputChange('senha', e.target.value)}
               required
               disabled={loading}
             />

@@ -1,0 +1,45 @@
+{
+  "system": {
+    "status": "operational",
+    "uptime": 99.98,
+    "version": "1.0.0",
+    "lastUpdate": "2025-06-29T18:00:00Z"
+  },
+  "services": [
+    {
+      "name": "inspecao.digital",
+      "status": "online",
+      "uptime": 99.98,
+      "responseTime": 142,
+      "ssl": {
+        "valid": true,
+        "expiresIn": 89
+      }
+    },
+    {
+      "name": "www.inspecao.digital", 
+      "status": "online",
+      "uptime": 99.98,
+      "responseTime": 156,
+      "ssl": {
+        "valid": true,
+        "expiresIn": 89
+      }
+    },
+    {
+      "name": "Database (Supabase)",
+      "status": "online", 
+      "uptime": 100,
+      "responseTime": 45,
+      "ssl": {
+        "valid": true,
+        "expiresIn": 365
+      }
+    }
+  ],
+  "incidents": [],
+  "maintenance": {
+    "scheduled": false,
+    "next": null
+  }
+}

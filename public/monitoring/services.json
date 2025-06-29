@@ -1,0 +1,46 @@
+[
+  {
+    "name": "inspecao.digital",
+    "status": "online",
+    "uptime": 99.98,
+    "lastCheck": "2025-06-29T18:05:25.000Z",
+    "responseTime": 142,
+    "ssl": {
+      "valid": true,
+      "expiresIn": 89
+    }
+  },
+  {
+    "name": "www.inspecao.digital",
+    "status": "online", 
+    "uptime": 99.98,
+    "lastCheck": "2025-06-29T18:05:25.000Z",
+    "responseTime": 156,
+    "ssl": {
+      "valid": true,
+      "expiresIn": 89
+    }
+  },
+  {
+    "name": "API Backend",
+    "status": "online",
+    "uptime": 99.95,
+    "lastCheck": "2025-06-29T18:05:25.000Z", 
+    "responseTime": 89,
+    "ssl": {
+      "valid": true,
+      "expiresIn": 89
+    }
+  },
+  {
+    "name": "Database (Supabase)",
+    "status": "online",
+    "uptime": 100,
+    "lastCheck": "2025-06-29T18:05:25.000Z",
+    "responseTime": 45,
+    "ssl": {
+      "valid": true,
+      "expiresIn": 365
+    }
+  }
+]

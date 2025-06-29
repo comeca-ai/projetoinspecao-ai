@@ -7,7 +7,7 @@ import { applyClientSecurityHeaders } from '@/utils/securityHeaders';
  * - Sets up security event listeners
  * - Configures secure defaults
  */
-const SecurityInitializer: React.FC = () => {
+const SecurityInitializer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
     // Apply security headers via meta tags
     applyClientSecurityHeaders();
@@ -39,8 +39,8 @@ const SecurityInitializer: React.FC = () => {
     };
   }, []);
   
-  // This component doesn't render anything
-  return null;
+  // Render children
+  return <>{children}</>;
 };
 
 export default SecurityInitializer;

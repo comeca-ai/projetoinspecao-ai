@@ -10,6 +10,8 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Loading from "@/components/ui/Loading";
 import SecurityInitializer from "@/components/security/SecurityInitializer";
 import { TestSupabaseConnection } from "@/components/TestSupabaseConnection";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import DiagnosticPage from "@/components/DiagnosticPage";
 
 // Auth pages
 import Login from "@/pages/auth/Login";
@@ -25,6 +27,7 @@ import NotFound from "@/pages/NotFound";
 // Inspetor pages
 import InspetorDashboard from "@/pages/inspetor/Dashboard";
 import InspectionExecution from "@/pages/inspetor/InspectionExecution";
+import NewInspection from "@/pages/inspetor/NewInspection";
 
 // Gestor pages
 import TeamDashboard from "@/pages/gestor/TeamDashboard";
@@ -37,6 +40,7 @@ import TeamInspections from "@/pages/gestor/TeamInspections";
 import ClientManagement from "@/pages/admin/ClientManagement";
 import SystemOverview from "@/pages/admin/SystemOverview";
 import VoiceLogs from "@/pages/admin/VoiceLogs";
+import { Monitoring } from "@/pages/admin/Monitoring";
 
 // AppRoutes component to handle routing with auth
 const AppRoutes = () => {
@@ -51,9 +55,14 @@ const AppRoutes = () => {
     <Routes location={location} key={location.pathname}>
       {/* Public routes */}
       <Route path="/" element={<Index />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/diagnostic" element={<DiagnosticPage />} />
+      <Route path="/test-supabase" element={<TestSupabaseConnection />} />
+      <Route path="/auth/login" element={<Login />} />
+      <Route path="/auth/register" element={<Register />} />
+      <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+      <Route path="/login" element={<Navigate to="/auth/login" replace />} />
+      <Route path="/register" element={<Navigate to="/auth/register" replace />} />
+      <Route path="/forgot-password" element={<Navigate to="/auth/forgot-password" replace />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* Protected routes */}
@@ -62,6 +71,134 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      
+      {/* Inspections routes */}
+      <Route
+        path="/inspections"
+        element={
+          <ProtectedRoute>
+            <InspetorDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inspections/new"
+        element={
+          <ProtectedRoute>
+            <NewInspection />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inspections/:id"
+        element={
+          <ProtectedRoute>
+            <InspectionExecution />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inspections/:id/execute"
+        element={
+          <ProtectedRoute>
+            <InspectionExecution />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inspections/:id/details"
+        element={
+          <ProtectedRoute>
+            <InspectionExecution />
+          </ProtectedRoute>
+        }
+      />
+      
+      {/* Reports route */}
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        }
+      />
+      
+      {/* Settings route */}
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Billing />
+          </ProtectedRoute>
+        }
+      />
+      
+      {/* Admin routes */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <SystemOverview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/sistema"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <SystemOverview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/system"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <SystemOverview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/clientes"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ClientManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/clients"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <ClientManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/voz"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <VoiceLogs />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/voice-logs"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <VoiceLogs />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/monitoring"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <Monitoring />
           </ProtectedRoute>
         }
       />
@@ -92,12 +229,63 @@ const AppRoutes = () => {
             <TeamDashboard />
           </ProtectedRoute>
         }
-      >
-        <Route index element={<TeamInspections />} />
-        <Route path="modelos" element={<TemplateManager />} />
-        <Route path="analytics" element={<Analytics />} />
-        <Route path="faturamento" element={<Billing />} />
-      </Route>
+      />
+      <Route
+        path="/team"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <TeamDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gestor/team"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <TeamInspections />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gestor/modelos"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <TemplateManager />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gestor/templates"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <TemplateManager />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gestor/analytics"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <Analytics />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gestor/faturamento"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <Billing />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gestor/billing"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <Billing />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Admin routes */}
       <Route
@@ -130,27 +318,25 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <PermissionsProvider>
-          <VoiceAssistantProvider>
-            <BrowserRouter>
-              <TooltipProvider>
-                <SecurityInitializer>
-                  {/* Temporary test route for Supabase connection */}
-                  <Routes>
-                    <Route path="/test-supabase" element={<TestSupabaseConnection />} />
-                  </Routes>
-                  <AppRoutes />
-                </SecurityInitializer>
-              </TooltipProvider>
-              <Toaster />
-              <Sonner />
-            </BrowserRouter>
-          </VoiceAssistantProvider>
-        </PermissionsProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <PermissionsProvider>
+            <VoiceAssistantProvider>
+              <BrowserRouter>
+                <TooltipProvider>
+                  <SecurityInitializer>
+                    <AppRoutes />
+                  </SecurityInitializer>
+                </TooltipProvider>
+                <Toaster />
+                <Sonner />
+              </BrowserRouter>
+            </VoiceAssistantProvider>
+          </PermissionsProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

@@ -1,7 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { supabase } from '@/lib/supabase';
 import { User } from '@/types/auth';
-import { logger } from '@/utils/logger';
 
 // JWT payload interface
 export interface JwtPayload {
@@ -26,7 +25,7 @@ export const validateToken = (token: string): boolean => {
     const currentTime = Date.now() / 1000;
     return decoded.exp > currentTime;
   } catch (error) {
-    logger.error('Token validation error:', error as Error);
+    console.error('Token validation error:', error as Error);
     return false;
   }
 };
@@ -38,7 +37,7 @@ export const getTokenExpiration = (token: string): number | null => {
     const decoded = jwtDecode<JwtPayload>(token);
     return decoded.exp * 1000; // Convert to milliseconds
   } catch (error) {
-    logger.error('Error getting token expiration:', error as Error);
+    console.error('Error getting token expiration:', error as Error);
     return null;
   }
 };
@@ -72,7 +71,7 @@ export const refreshSessionIfNeeded = async (token: string): Promise<{
       const { data, error } = await supabase.auth.refreshSession();
       
       if (error || !data.session) {
-        logger.error('Error refreshing session:', error);
+        console.error('Error refreshing session:', error);
         return { success: false, error: error?.message || 'Failed to refresh session' };
       }
       
@@ -81,7 +80,7 @@ export const refreshSessionIfNeeded = async (token: string): Promise<{
     
     return { success: true };
   } catch (error) {
-    logger.error('Error in refreshSessionIfNeeded:', error as Error);
+    console.error('Error in refreshSessionIfNeeded:', error as Error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };
@@ -115,7 +114,7 @@ export const validateSession = async (token: string): Promise<{
     const { data, error } = await supabase.auth.getUser(token);
     
     if (error || !data.user) {
-      logger.warn('Invalid session token', { error: error?.message });
+      console.warn('Invalid session token', { error: error?.message });
       return { valid: false, error: 'Invalid session' };
     }
 
@@ -138,7 +137,7 @@ export const validateSession = async (token: string): Promise<{
 
     return { valid: true, user };
   } catch (error) {
-    logger.error('Error validating session:', error as Error);
+    console.error('Error validating session:', error as Error);
     return { valid: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };
@@ -170,7 +169,7 @@ export const setupSessionRefresh = (
         );
       }
     } else {
-      logger.error('Failed to refresh session:', error);
+      console.error('Failed to refresh session:', error);
     }
   }, refreshTime);
   

@@ -80,23 +80,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Get the user role from the JWT or user metadata
       let userRole: UserRole = 'inspetor'; // Default role
       
-      try {
-        const jwtData = jwtDecode<JwtPayload>(session.access_token);
-        const roleFromJwt = jwtData.role as UserRole;
-        const roleFromMetadata = user.user_metadata?.role as UserRole;
-        
-        // Validate the role is one of the allowed values
-        if (roleFromJwt && ['admin', 'gestor', 'inspetor'].includes(roleFromJwt)) {
-          userRole = roleFromJwt;
-        } else if (roleFromMetadata && ['admin', 'gestor', 'inspetor'].includes(roleFromMetadata)) {
-          userRole = roleFromMetadata;
+      // Check if user is in admin list
+      const adminEmails = ['jhonata.emerick@gmail.com', 'felipe.tancredi@gmail.com'];
+      const gestorEmails = ['felipe.tancredi@grupoaltavilla.com.br'];
+      const inspetorEmails = ['jer@grupoaltavilla.com.br'];
+      
+      if (adminEmails.includes(user.email || '')) {
+        userRole = 'admin';
+      } else if (gestorEmails.includes(user.email || '')) {
+        userRole = 'gestor';
+      } else if (inspetorEmails.includes(user.email || '')) {
+        userRole = 'inspetor';
+      } else {
+        try {
+          const jwtData = jwtDecode<JwtPayload>(session.access_token);
+          const roleFromJwt = jwtData.role as UserRole;
+          const roleFromMetadata = user.user_metadata?.role as UserRole;
+          
+          // Validate the role is one of the allowed values
+          if (roleFromJwt && ['admin', 'gestor', 'inspetor'].includes(roleFromJwt)) {
+            userRole = roleFromJwt;
+          } else if (roleFromMetadata && ['admin', 'gestor', 'inspetor'].includes(roleFromMetadata)) {
+            userRole = roleFromMetadata;
+          }
+        } catch (jwtError) {
+          console.error('Error decoding JWT:', jwtError);
+          const roleFromMetadata = user.user_metadata?.role as UserRole;
+          if (roleFromMetadata && ['admin', 'gestor', 'inspetor'].includes(roleFromMetadata)) {
+            userRole = roleFromMetadata;
+          }
         }
-      } catch (jwtError) {
-        console.error('Error decoding JWT:', jwtError);
-        const roleFromMetadata = user.user_metadata?.role as UserRole;
-        if (roleFromMetadata && ['admin', 'gestor', 'inspetor'].includes(roleFromMetadata)) {
-          userRole = roleFromMetadata;
-        }
+      }
+      
+      // Define team relationships
+      let equipeId = user.user_metadata?.equipe_id;
+      let clienteId = user.user_metadata?.cliente_id;
+      
+      // Map team relationships for Grupo Altavilla
+      if (user.email === 'felipe.tancredi@grupoaltavilla.com.br') {
+        equipeId = 'altavilla-team-001';
+        clienteId = 'altavilla-client-001';
+      } else if (user.email === 'jer@grupoaltavilla.com.br') {
+        equipeId = 'altavilla-team-001'; // Same team as Felipe (gestor)
+        clienteId = 'altavilla-client-001';
       }
       
       return {
@@ -106,8 +132,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role: userRole,
         plano: userRole === 'admin' ? 'enterprise' : userRole === 'gestor' ? 'profissional' : 'iniciante',
         created_at: user.created_at,
-        equipe_id: user.user_metadata?.equipe_id,
-        cliente_id: user.user_metadata?.cliente_id,
+        equipe_id: equipeId,
+        cliente_id: clienteId,
         access_token: session.access_token,
         refresh_token: session.refresh_token,
         expires_at: session.expires_at ? new Date(session.expires_at * 1000) : null,
