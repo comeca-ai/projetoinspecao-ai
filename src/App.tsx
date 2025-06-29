@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { PermissionsProvider } from "@/contexts/PermissionsContext";
+import { VoiceAssistantProvider } from "@/contexts/VoiceAssistantContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 // Auth pages
@@ -41,124 +43,128 @@ const App = () => (
       <Toaster />
       <Sonner />
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Landing page */}
-            <Route path="/" element={<Index />} />
-            
-            {/* Public routes */}
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            
-            {/* Protected routes */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Inspetor routes */}
-            <Route
-              path="/inspections"
-              element={
-                <ProtectedRoute roles={['inspetor']}>
-                  <InspetorDashboard />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/inspections/:id/execute"
-              element={
-                <ProtectedRoute roles={['inspetor']}>
-                  <InspectionExecution />
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Gestor routes */}
-            <Route
-              path="/team"
-              element={
-                <ProtectedRoute roles={['gestor']}>
-                  <TeamDashboard />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/team-inspections"
-              element={
-                <ProtectedRoute roles={['gestor']}>
-                  <TeamInspections />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/templates"
-              element={
-                <ProtectedRoute roles={['gestor']}>
-                  <TemplateManager />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/analytics"
-              element={
-                <ProtectedRoute roles={['gestor']}>
-                  <Analytics />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/billing"
-              element={
-                <ProtectedRoute roles={['gestor']}>
-                  <Billing />
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Admin routes */}
-            <Route
-              path="/admin/clients"
-              element={
-                <ProtectedRoute roles={['admin']}>
-                  <ClientManagement />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/admin/system"
-              element={
-                <ProtectedRoute roles={['admin']}>
-                  <SystemOverview />
-                </ProtectedRoute>
-              }
-            />
-            
-            <Route
-              path="/admin/voice-logs"
-              element={
-                <ProtectedRoute roles={['admin']}>
-                  <VoiceLogs />
-                </ProtectedRoute>
-              }
-            />
-            
-            {/* Utility routes */}
-            <Route path="/unauthorized" element={<Unauthorized />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <PermissionsProvider>
+          <VoiceAssistantProvider>
+            <BrowserRouter>
+              <Routes>
+                {/* Landing page */}
+                <Route path="/" element={<Index />} />
+                
+                {/* Public routes */}
+                <Route path="/auth/login" element={<Login />} />
+                <Route path="/auth/register" element={<Register />} />
+                <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+                
+                {/* Protected routes */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                {/* Inspetor routes */}
+                <Route
+                  path="/inspections"
+                  element={
+                    <ProtectedRoute roles={['inspetor']}>
+                      <InspetorDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/inspections/:id/execute"
+                  element={
+                    <ProtectedRoute roles={['inspetor']}>
+                      <InspectionExecution />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                {/* Gestor routes */}
+                <Route
+                  path="/team"
+                  element={
+                    <ProtectedRoute roles={['gestor']}>
+                      <TeamDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/team-inspections"
+                  element={
+                    <ProtectedRoute roles={['gestor']}>
+                      <TeamInspections />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/templates"
+                  element={
+                    <ProtectedRoute roles={['gestor']}>
+                      <TemplateManager />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/analytics"
+                  element={
+                    <ProtectedRoute roles={['gestor']}>
+                      <Analytics />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/billing"
+                  element={
+                    <ProtectedRoute roles={['gestor']}>
+                      <Billing />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                {/* Admin routes */}
+                <Route
+                  path="/admin/clients"
+                  element={
+                    <ProtectedRoute roles={['admin']}>
+                      <ClientManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/admin/system"
+                  element={
+                    <ProtectedRoute roles={['admin']}>
+                      <SystemOverview />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                <Route
+                  path="/admin/voice-logs"
+                  element={
+                    <ProtectedRoute roles={['admin']}>
+                      <VoiceLogs />
+                    </ProtectedRoute>
+                  }
+                />
+                
+                {/* Utility routes */}
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </VoiceAssistantProvider>
+        </PermissionsProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
