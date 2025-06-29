@@ -17,6 +17,10 @@ import Index from "@/pages/Index";
 import Unauthorized from "@/pages/Unauthorized";
 import NotFound from "@/pages/NotFound";
 
+// Inspetor pages
+import InspetorDashboard from "@/pages/inspetor/Dashboard";
+import InspectionExecution from "@/pages/inspetor/InspectionExecution";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -45,16 +49,26 @@ const App = () => (
               }
             />
             
-            {/* Placeholder routes for future implementation */}
+            {/* Inspetor routes */}
             <Route
               path="/inspections"
               element={
                 <ProtectedRoute roles={['inspetor']}>
-                  <div className="p-6">Página de Inspeções (Em desenvolvimento)</div>
+                  <InspetorDashboard />
                 </ProtectedRoute>
               }
             />
             
+            <Route
+              path="/inspections/:id/execute"
+              element={
+                <ProtectedRoute roles={['inspetor']}>
+                  <InspectionExecution />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* Placeholder routes for future implementation */}
             <Route
               path="/team"
               element={
