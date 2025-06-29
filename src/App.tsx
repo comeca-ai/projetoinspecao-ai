@@ -2,11 +2,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { PermissionsProvider } from "@/contexts/PermissionsContext";
 import { VoiceAssistantProvider } from "@/contexts/VoiceAssistantContext";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import Loading from "@/components/ui/Loading";
+import SecurityInitializer from "@/components/security/SecurityInitializer";
+import { TestSupabaseConnection } from "@/components/TestSupabaseConnection";
 
 // Auth pages
 import Login from "@/pages/auth/Login";
@@ -35,139 +38,120 @@ import ClientManagement from "@/pages/admin/ClientManagement";
 import SystemOverview from "@/pages/admin/SystemOverview";
 import VoiceLogs from "@/pages/admin/VoiceLogs";
 
-const queryClient = new QueryClient();
+// AppRoutes component to handle routing with auth
+const AppRoutes = () => {
+  const { loading } = useAuth();
+  const location = useLocation();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+  if (loading) {
+    return <Loading fullScreen />;
+  }
+
+  return (
+    <Routes location={location} key={location.pathname}>
+      {/* Public routes */}
+      <Route path="/" element={<Index />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
+
+      {/* Protected routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Inspetor routes */}
+      <Route
+        path="/inspetor"
+        element={
+          <ProtectedRoute allowedRoles={['inspetor']}>
+            <InspetorDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inspetor/executar/:id"
+        element={
+          <ProtectedRoute allowedRoles={['inspetor']}>
+            <InspectionExecution />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Gestor routes */}
+      <Route
+        path="/gestor"
+        element={
+          <ProtectedRoute allowedRoles={['gestor']}>
+            <TeamDashboard />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<TeamInspections />} />
+        <Route path="modelos" element={<TemplateManager />} />
+        <Route path="analytics" element={<Analytics />} />
+        <Route path="faturamento" element={<Billing />} />
+      </Route>
+
+      {/* Admin routes */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={['admin']}>
+            <SystemOverview />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="clientes" element={<ClientManagement />} />
+        <Route path="sistema" element={<SystemOverview />} />
+        <Route path="voz" element={<VoiceLogs />} />
+      </Route>
+
+      {/* 404 - Not Found */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <PermissionsProvider>
           <VoiceAssistantProvider>
             <BrowserRouter>
-              <Routes>
-                {/* Landing page */}
-                <Route path="/" element={<Index />} />
-                
-                {/* Public routes */}
-                <Route path="/auth/login" element={<Login />} />
-                <Route path="/auth/register" element={<Register />} />
-                <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-                
-                {/* Protected routes */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                {/* Inspetor routes */}
-                <Route
-                  path="/inspections"
-                  element={
-                    <ProtectedRoute roles={['inspetor']}>
-                      <InspetorDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/inspections/:id/execute"
-                  element={
-                    <ProtectedRoute roles={['inspetor']}>
-                      <InspectionExecution />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                {/* Gestor routes */}
-                <Route
-                  path="/team"
-                  element={
-                    <ProtectedRoute roles={['gestor']}>
-                      <TeamDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/team-inspections"
-                  element={
-                    <ProtectedRoute roles={['gestor']}>
-                      <TeamInspections />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/templates"
-                  element={
-                    <ProtectedRoute roles={['gestor']}>
-                      <TemplateManager />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/analytics"
-                  element={
-                    <ProtectedRoute roles={['gestor']}>
-                      <Analytics />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/billing"
-                  element={
-                    <ProtectedRoute roles={['gestor']}>
-                      <Billing />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                {/* Admin routes */}
-                <Route
-                  path="/admin/clients"
-                  element={
-                    <ProtectedRoute roles={['admin']}>
-                      <ClientManagement />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/admin/system"
-                  element={
-                    <ProtectedRoute roles={['admin']}>
-                      <SystemOverview />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                <Route
-                  path="/admin/voice-logs"
-                  element={
-                    <ProtectedRoute roles={['admin']}>
-                      <VoiceLogs />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                {/* Utility routes */}
-                <Route path="/unauthorized" element={<Unauthorized />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <TooltipProvider>
+                <SecurityInitializer>
+                  {/* Temporary test route for Supabase connection */}
+                  <Routes>
+                    <Route path="/test-supabase" element={<TestSupabaseConnection />} />
+                  </Routes>
+                  <AppRoutes />
+                </SecurityInitializer>
+              </TooltipProvider>
+              <Toaster />
+              <Sonner />
             </BrowserRouter>
           </VoiceAssistantProvider>
         </PermissionsProvider>
       </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </QueryClientProvider>
+  );
+};
 
 export default App;
