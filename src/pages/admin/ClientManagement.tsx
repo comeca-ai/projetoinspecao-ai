@@ -17,7 +17,9 @@ import {
   Ban,
   RefreshCw,
   Crown,
-  AlertTriangle
+  AlertTriangle,
+  Download,
+  Upload
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -25,8 +27,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import ClientCard from '@/components/admin/ClientCard';
-import PlanManagement from '@/components/admin/PlanManagement';
 
 interface Client {
   id: string;
@@ -45,6 +53,8 @@ interface Client {
   monthlyRevenue: number;
   stripeCustomerId: string;
   trialEndsAt?: string;
+  region: string;
+  industry: string;
 }
 
 const mockClients: Client[] = [
@@ -63,7 +73,9 @@ const mockClients: Client[] = [
     storageUsed: 180,
     storageLimit: 500,
     monthlyRevenue: 599,
-    stripeCustomerId: 'cus_techcorp123'
+    stripeCustomerId: 'cus_techcorp123',
+    region: 'São Paulo',
+    industry: 'Engenharia'
   },
   {
     id: '2',
@@ -80,7 +92,9 @@ const mockClients: Client[] = [
     storageUsed: 32,
     storageLimit: 50,
     monthlyRevenue: 239,
-    stripeCustomerId: 'cus_inspecoes456'
+    stripeCustomerId: 'cus_inspecoes456',
+    region: 'Rio de Janeiro',
+    industry: 'Serviços'
   },
   {
     id: '3',
@@ -98,7 +112,9 @@ const mockClients: Client[] = [
     storageLimit: 5,
     monthlyRevenue: 0,
     stripeCustomerId: 'cus_eletrica789',
-    trialEndsAt: '2024-01-15'
+    trialEndsAt: '2024-01-15',
+    region: 'Minas Gerais',
+    industry: 'Elétrica'
   },
   {
     id: '4',
@@ -115,7 +131,28 @@ const mockClients: Client[] = [
     storageUsed: 45,
     storageLimit: 50,
     monthlyRevenue: 239,
-    stripeCustomerId: 'cus_solar101'
+    stripeCustomerId: 'cus_solar101',
+    region: 'Bahia',
+    industry: 'Energia Solar'
+  },
+  {
+    id: '5',
+    companyName: 'Automação Industrial',
+    contactName: 'Pedro Oliveira',
+    email: 'pedro@automacao.com',
+    phone: '+55 11 99999-5555',
+    plan: 'enterprise',
+    status: 'active',
+    joinDate: '2023-02-28',
+    lastActivity: '2024-01-15T11:20:00',
+    teamMembers: 35,
+    activeInspections: 67,
+    storageUsed: 320,
+    storageLimit: 500,
+    monthlyRevenue: 599,
+    stripeCustomerId: 'cus_automacao999',
+    region: 'Santa Catarina',
+    industry: 'Automação'
   }
 ];
 
@@ -123,14 +160,17 @@ const ClientManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [planFilter, setPlanFilter] = useState<string>('all');
+  const [regionFilter, setRegionFilter] = useState<string>('all');
 
   const filteredClients = mockClients.filter(client => {
     const matchesSearch = client.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          client.contactName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         client.email.toLowerCase().includes(searchTerm.toLowerCase());
+                         client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         client.industry.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || client.status === statusFilter;
     const matchesPlan = planFilter === 'all' || client.plan === planFilter;
-    return matchesSearch && matchesStatus && matchesPlan;
+    const matchesRegion = regionFilter === 'all' || client.region === regionFilter;
+    return matchesSearch && matchesStatus && matchesPlan && matchesRegion;
   });
 
   const getOverallStats = () => {
@@ -141,15 +181,22 @@ const ClientManagement: React.FC = () => {
       suspendedClients: mockClients.filter(c => c.status === 'suspended').length,
       totalRevenue: mockClients.reduce((sum, c) => sum + c.monthlyRevenue, 0),
       totalUsers: mockClients.reduce((sum, c) => sum + c.teamMembers, 0),
-      totalInspections: mockClients.reduce((sum, c) => sum + c.activeInspections, 0)
+      totalInspections: mockClients.reduce((sum, c) => sum + c.activeInspections, 0),
+      averageRevenuePerClient: Math.round(mockClients.reduce((sum, c) => sum + c.monthlyRevenue, 0) / mockClients.length)
     };
   };
 
   const stats = getOverallStats();
+  const uniqueRegions = Array.from(new Set(mockClients.map(c => c.region)));
 
   const handleClientAction = (clientId: string, action: string) => {
     console.log(`Action ${action} for client ${clientId}`);
     // Here you would implement the actual client management actions
+  };
+
+  const handleBulkAction = (action: string) => {
+    console.log(`Bulk action: ${action}`);
+    // Implement bulk actions
   };
 
   return (
@@ -165,10 +212,20 @@ const ClientManagement: React.FC = () => {
               Gerencie todos os clientes da plataforma SaaS
             </p>
           </div>
-          <Button className="bg-[#f26522] hover:bg-[#e55a1f]">
-            <Plus className="mr-2 h-4 w-4" />
-            Novo Cliente
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Exportar
+            </Button>
+            <Button variant="outline">
+              <Upload className="mr-2 h-4 w-4" />
+              Importar
+            </Button>
+            <Button className="bg-[#f26522] hover:bg-[#e55a1f]">
+              <Plus className="mr-2 h-4 w-4" />
+              Novo Cliente
+            </Button>
+          </div>
         </div>
 
         {/* Overview Stats */}
@@ -193,7 +250,9 @@ const ClientManagement: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">R$ {stats.totalRevenue.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">Receita recorrente</p>
+              <p className="text-xs text-muted-foreground">
+                Média: R$ {stats.averageRevenuePerClient}/cliente
+              </p>
             </CardContent>
           </Card>
 
@@ -204,7 +263,9 @@ const ClientManagement: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalUsers}</div>
-              <p className="text-xs text-muted-foreground">Across all clients</p>
+              <p className="text-xs text-muted-foreground">
+                Média: {Math.round(stats.totalUsers / stats.totalClients)} por cliente
+              </p>
             </CardContent>
           </Card>
 
@@ -225,7 +286,7 @@ const ClientManagement: React.FC = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
-              placeholder="Buscar clientes..."
+              placeholder="Buscar clientes por nome, email, indústria..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -233,48 +294,63 @@ const ClientManagement: React.FC = () => {
           </div>
           <div className="flex gap-2">
             {/* Status Filter */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Filter className="mr-2 h-4 w-4" />
-                  Status: {statusFilter === 'all' ? 'Todos' : statusFilter}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setStatusFilter('all')}>
-                  Todos
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('active')}>
-                  Ativos
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('trial')}>
-                  Trial
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('suspended')}>
-                  Suspensos
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos</SelectItem>
+                <SelectItem value="active">Ativos</SelectItem>
+                <SelectItem value="trial">Trial</SelectItem>
+                <SelectItem value="suspended">Suspensos</SelectItem>
+                <SelectItem value="expired">Expirados</SelectItem>
+              </SelectContent>
+            </Select>
 
             {/* Plan Filter */}
+            <Select value={planFilter} onValueChange={setPlanFilter}>
+              <SelectTrigger className="w-36">
+                <SelectValue placeholder="Plano" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos</SelectItem>
+                <SelectItem value="iniciante">Iniciante</SelectItem>
+                <SelectItem value="profissional">Profissional</SelectItem>
+                <SelectItem value="enterprise">Enterprise</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Region Filter */}
+            <Select value={regionFilter} onValueChange={setRegionFilter}>
+              <SelectTrigger className="w-36">
+                <SelectValue placeholder="Região" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas</SelectItem>
+                {uniqueRegions.map((region) => (
+                  <SelectItem key={region} value={region}>
+                    {region}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Bulk Actions */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  Plano: {planFilter === 'all' ? 'Todos' : planFilter}
+                <Button variant="outline">
+                  <MoreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setPlanFilter('all')}>
-                  Todos
+                <DropdownMenuItem onClick={() => handleBulkAction('export')}>
+                  Exportar Selecionados
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setPlanFilter('iniciante')}>
-                  Iniciante
+                <DropdownMenuItem onClick={() => handleBulkAction('email')}>
+                  Enviar Email em Massa
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setPlanFilter('profissional')}>
-                  Profissional
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setPlanFilter('enterprise')}>
-                  Enterprise
+                <DropdownMenuItem onClick={() => handleBulkAction('suspend')}>
+                  Suspender Selecionados
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -297,12 +373,52 @@ const ClientManagement: React.FC = () => {
             <Building className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhum cliente encontrado</h3>
             <p className="mt-1 text-sm text-gray-500">
-              {searchTerm || statusFilter !== 'all' || planFilter !== 'all'
+              {searchTerm || statusFilter !== 'all' || planFilter !== 'all' || regionFilter !== 'all'
                 ? 'Tente ajustar os filtros de busca.'
                 : 'Comece adicionando o primeiro cliente.'
               }
             </p>
+            <div className="mt-6">
+              <Button className="bg-[#f26522] hover:bg-[#e55a1f]">
+                <Plus className="mr-2 h-4 w-4" />
+                Adicionar Primeiro Cliente
+              </Button>
+            </div>
           </div>
+        )}
+
+        {/* Summary Footer */}
+        {filteredClients.length > 0 && (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-[#f26522]">
+                    {filteredClients.length}
+                  </div>
+                  <div className="text-sm text-gray-600">Clientes Filtrados</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    R$ {filteredClients.reduce((sum, c) => sum + c.monthlyRevenue, 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">Receita Total</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {filteredClients.reduce((sum, c) => sum + c.teamMembers, 0)}
+                  </div>
+                  <div className="text-sm text-gray-600">Usuários Total</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {filteredClients.reduce((sum, c) => sum + c.activeInspections, 0)}
+                  </div>
+                  <div className="text-sm text-gray-600">Inspeções Ativas</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </AppLayout>

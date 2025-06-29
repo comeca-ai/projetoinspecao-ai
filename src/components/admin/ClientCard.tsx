@@ -17,7 +17,11 @@ import {
   RefreshCw,
   Crown,
   AlertTriangle,
-  Clock
+  Clock,
+  MapPin,
+  Briefcase,
+  DollarSign,
+  Activity
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -44,6 +48,8 @@ interface Client {
   monthlyRevenue: number;
   stripeCustomerId: string;
   trialEndsAt?: string;
+  region?: string;
+  industry?: string;
 }
 
 interface ClientCardProps {
@@ -116,6 +122,35 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
     return diffInDays <= 3;
   };
 
+  const getHealthScore = () => {
+    // Calculate a health score based on various factors
+    let score = 100;
+    
+    // Reduce score for high storage usage
+    const storagePercentage = getStoragePercentage();
+    if (storagePercentage > 90) score -= 20;
+    else if (storagePercentage > 75) score -= 10;
+    
+    // Reduce score for inactivity
+    const lastActivityDate = new Date(client.lastActivity);
+    const daysSinceActivity = Math.floor((Date.now() - lastActivityDate.getTime()) / (1000 * 60 * 60 * 24));
+    if (daysSinceActivity > 7) score -= 15;
+    else if (daysSinceActivity > 3) score -= 5;
+    
+    // Reduce score for suspended status
+    if (client.status === 'suspended') score -= 30;
+    else if (client.status === 'trial' && isTrialExpiringSoon()) score -= 15;
+    
+    return Math.max(0, score);
+  };
+
+  const healthScore = getHealthScore();
+  const getHealthColor = (score: number) => {
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    return 'text-red-600';
+  };
+
   return (
     <Card className={`hover:shadow-lg transition-shadow ${
       client.status === 'suspended' ? 'border-red-200 bg-red-50' : 
@@ -129,9 +164,12 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
               <h3 className="font-semibold text-lg">{client.companyName}</h3>
             </div>
             <p className="text-sm text-gray-600 mb-2">{client.contactName}</p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               {getStatusBadge(client.status)}
               {getPlanBadge(client.plan)}
+              <Badge variant="outline" className="text-xs">
+                Score: <span className={getHealthColor(healthScore)}>{healthScore}%</span>
+              </Badge>
             </div>
           </div>
           <DropdownMenu>
@@ -148,6 +186,10 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
               <DropdownMenuItem onClick={() => onAction(client.id, 'billing')}>
                 <Crown className="mr-2 h-4 w-4" />
                 Gerenciar Plano
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onAction(client.id, 'support')}>
+                <Mail className="mr-2 h-4 w-4" />
+                Contatar Cliente
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {client.status === 'active' ? (
@@ -179,6 +221,7 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
             <div className="flex items-center gap-1 text-xs">
               <Clock className="h-3 w-3" />
               Trial expira em: {formatDate(client.trialEndsAt)}
+              {isTrialExpiringSoon() && ' ⚠️ URGENTE'}
             </div>
           </div>
         )}
@@ -193,6 +236,18 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
             <Phone className="h-3 w-3" />
             <span>{client.phone}</span>
           </div>
+          {client.region && (
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <MapPin className="h-3 w-3" />
+              <span>{client.region}</span>
+            </div>
+          )}
+          {client.industry && (
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Briefcase className="h-3 w-3" />
+              <span>{client.industry}</span>
+            </div>
+          )}
         </div>
 
         {/* Usage Metrics */}
@@ -218,14 +273,20 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
           <Progress value={getStoragePercentage()} className="h-2" />
           <div className="text-xs text-gray-500">
             {getStoragePercentage()}% utilizado
+            {getStoragePercentage() > 85 && (
+              <span className="text-red-600 ml-2">⚠️ Alto uso</span>
+            )}
           </div>
         </div>
 
         {/* Revenue */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-600">Receita Mensal:</span>
-          <div className="text-lg font-bold text-green-600">
-            R$ {client.monthlyRevenue.toLocaleString()}
+          <div className="flex items-center gap-1">
+            <DollarSign className="h-4 w-4 text-green-600" />
+            <span className="text-lg font-bold text-green-600">
+              R$ {client.monthlyRevenue.toLocaleString()}
+            </span>
           </div>
         </div>
 
@@ -240,7 +301,7 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <TrendingUp className="h-3 w-3" />
+              <Activity className="h-3 w-3" />
               Última atividade:
             </div>
             <span>{formatLastActivity(client.lastActivity)}</span>
@@ -249,6 +310,26 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onAction }) => {
             <span>Stripe ID:</span>
             <span className="font-mono text-xs">{client.stripeCustomerId}</span>
           </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="flex gap-2 pt-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1"
+            onClick={() => onAction(client.id, 'view')}
+          >
+            Ver Detalhes
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1"
+            onClick={() => onAction(client.id, 'billing')}
+          >
+            Cobrança
+          </Button>
         </div>
       </CardContent>
     </Card>
