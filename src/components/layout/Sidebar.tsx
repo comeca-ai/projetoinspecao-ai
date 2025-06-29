@@ -9,7 +9,7 @@ import {
   FileText,
   Settings,
   BarChart3,
-  Template,
+  LayoutTemplate,
   Shield,
   Database,
   Mic,
@@ -60,7 +60,7 @@ const navItems: NavItem[] = [
   {
     title: 'Templates',
     href: '/templates',
-    icon: Template,
+    icon: LayoutTemplate,
     roles: ['gestor'],
   },
   {
