@@ -1,96 +1,65 @@
-# 🎨 UI Development Plan (com Assistente Virtual)
+# UI Development Plan
 
-## Telas Necessárias
+## Telas Necessárias por Tipo de Usuário
 
-### ☐ Principais interfaces:
-- [ ] Tela de Login
-- [ ] Tela de Dashboard
-- [ ] Tela de Projeto
-- [ ] Tela de Inspeção
-- [ ] Tela de Relatório
-- [ ] Modal Assistente Virtual
+🔹 Inspetor
+
+- Dashboard pessoal de inspeções
+- Tela de execução de inspeção
+- Modal do assistente virtual
+- Visualizador de relatório
+
+🔹 Gestor de Equipe
+
+- Painel de equipe
+- Gerenciador de templates
+- Tela de inspeções da equipe
+- Dashboard analítico (por inspetor, por projeto)
+
+🔹 Administrador SaaS
+
+- Painel de contas e planos
+- Visão global de uso (storage, IA, usuários ativos)
+- Log de comandos de voz e falhas
+- Painel de billing (Stripe), gerenciamento de clientes
 
 ## Componentes por Tela
 
-### 🔹 Tela de Inspeção
+🔹 Tela de Execução de Inspeção (Inspetor)
 
-#### ☐ Layout principal:
-- [ ] Lista lateral de testes disponíveis (drag-and-drop)
-- [ ] Área central com testes em andamento
-- [ ] Botão "Gravar Observação"
-- [ ] Botão "Ativar Assistente Virtual"
+- Lista lateral de testes (drag-and-drop)
+- Painel central de testes selecionados
+- Área de mídia (imagem, áudio)
+- Modal de observação textual
+- Botão de ativação do assistente virtual
+- Indicador de status ("escutando" / "interpretando")
+- Feedback visual das ações do assistente
 
-#### ☐ Feedback do assistente:
-- [ ] Feedback visual do comando processado
-- [ ] Indicador de status ("Escutando…" / "Interpretando…" / "Executado")
+🔹 Modal Assistente Virtual
 
-### 🔹 Modal Assistente Virtual
+- Componente de escuta
+- Transcrição em tempo real
+- Ação interpretada (ex: “Adicionando teste de isolamento”)
+- Histórico dos últimos comandos
 
-#### ☐ Interface de voz:
-- [ ] Componente de escuta com botão (pressionar para falar)
-- [ ] Campo de transcrição (ao vivo)
-- [ ] Feedback textual da IA ("Adicionando teste: Continuidade Elétrica")
-- [ ] Lista dos últimos 5 comandos executados
+🔹 Painel de Equipe (Gestor)
+
+- Lista de inspetores
+- Botão: convidar novo membro
+- Coluna: inspeções em andamento
+- Coluna: relatórios finalizados
+
+🔹 Admin SaaS – Painel Global
+
+- Lista de clientes e plano atual
+- Consumo de recursos (storage, API calls)
+- Logs de IA e comandos de voz
+- Ações de suporte: reset, upgrade, ban
 
 ## Fluxo de UI
 
-### ☐ Jornada do usuário:
-1. [ ] Usuário entra no dashboard e inicia um projeto
-2. [ ] Inicia nova inspeção
-3. [ ] Ativa assistente virtual (ícone visível)
-4. [ ] Fala: "Adicionar teste de termografia"
-5. [ ] Áudio enviado → Whisper → transcript
-6. [ ] Backend processa transcript via GPT → retorna comando MCP
-7. [ ] Front executa comando (adiciona teste automaticamente)
-8. [ ] Usuário confirma ou ajusta via UI
-9. [ ] Gera relatório e salva inspeção
-
----
-
-## Especificações Técnicas
-
-### Estados do Assistente Virtual
-- **Inativo**: Botão disponível para ativação
-- **Escutando**: Indicador visual ativo, capturando áudio
-- **Processando**: Spinner/loading durante transcrição e interpretação
-- **Executando**: Feedback visual da ação sendo realizada
-- **Concluído**: Confirmação da ação executada
-- **Erro**: Mensagem de erro com opção de tentar novamente
-
-### Componentes Reutilizáveis
-- **VoiceButton**: Botão de ativação do assistente
-- **TranscriptionDisplay**: Exibição da transcrição em tempo real
-- **CommandFeedback**: Feedback visual das ações do assistente
-- **CommandHistory**: Histórico dos últimos comandos
-- **StatusIndicator**: Indicadores de status do sistema
-
-### Responsividade
-- **Desktop**: Layout completo com todas as funcionalidades
-- **Tablet**: Interface adaptada mantendo funcionalidades principais
-- **Mobile**: Versão simplificada com foco na usabilidade
-
-### Acessibilidade
-- **Keyboard Navigation**: Navegação completa por teclado
-- **Screen Readers**: Suporte para leitores de tela
-- **Voice Feedback**: Confirmações audíveis das ações
-- **High Contrast**: Modo de alto contraste disponível
-
-## Critérios de Aceitação
-
-### ☐ Funcionalidade:
-- [ ] Todos os fluxos principais funcionando
-- [ ] Assistente virtual integrado e responsivo
-- [ ] Fallback manual sempre disponível
-- [ ] Performance adequada em dispositivos móveis
-
-### ☐ UX/UI:
-- [ ] Interface intuitiva e acessível
-- [ ] Feedback visual claro para todas as ações
-- [ ] Estados de loading e erro bem definidos
-- [ ] Design consistente com o sistema
-
-### ☐ Integração:
-- [ ] Comunicação efetiva com backend
-- [ ] Tratamento de erros robusto
-- [ ] Logs de interação para análise
-- [ ] Compatibilidade cross-browser
+1. Inspetor acessa o painel → seleciona inspeção → ativa assistente
+2. Fala um comando (“adicionar teste”) → transcrição → execução
+3. Ao finalizar, gera relatório
+4. Gestor acessa o projeto → acompanha status da equipe
+5. Admin monitora uso da IA, comandos de voz e comportamento de sistema
