@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import AuthLayout from '@/components/auth/AuthLayout';
@@ -17,7 +16,7 @@ const Register: React.FC = () => {
     email: '',
     password: '',
     nome: '',
-    role: 'inspetor',
+    role: 'inspetor', // Default role
     empresa: '',
   });
 
@@ -103,35 +102,16 @@ const Register: React.FC = () => {
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="role">Função</Label>
-          <Select
-            value={formData.role}
-            onValueChange={(value: 'gestor' | 'inspetor') => handleInputChange('role', value)}
+          <Label htmlFor="empresa">Nome da Empresa (Opcional)</Label>
+          <Input
+            id="empresa"
+            type="text"
+            placeholder="Nome da sua empresa"
+            value={formData.empresa}
+            onChange={(e) => handleInputChange('empresa', e.target.value)}
             disabled={loading}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione sua função" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="gestor">Gestor de Equipe</SelectItem>
-              <SelectItem value="inspetor">Inspetor de Campo</SelectItem>
-            </SelectContent>
-          </Select>
+          />
         </div>
-        
-        {formData.role === 'gestor' && (
-          <div className="space-y-2">
-            <Label htmlFor="empresa">Nome da Empresa</Label>
-            <Input
-              id="empresa"
-              type="text"
-              placeholder="Nome da sua empresa"
-              value={formData.empresa}
-              onChange={(e) => handleInputChange('empresa', e.target.value)}
-              disabled={loading}
-            />
-          </div>
-        )}
         
         <Button
           type="submit"
@@ -162,8 +142,8 @@ const Register: React.FC = () => {
         
         <div className="mt-4 p-3 bg-blue-50 rounded-lg">
           <p className="text-xs text-blue-800">
-            <strong>Gestores</strong> podem criar equipes e gerenciar inspetores.<br />
-            <strong>Inspetores</strong> executam inspeções em campo.
+            Ao criar sua conta, você começará como <strong>Inspetor</strong>. 
+            Você poderá solicitar permissões de gestor posteriormente através do suporte.
           </p>
         </div>
       </form>
