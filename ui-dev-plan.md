@@ -1,5 +1,10 @@
 # UI Development Plan
 
+🔹 Geral
+- Tela de Cadastro
+- Tela de Login
+- Tela de recuperação de senha
+ 
 ## Telas Necessárias por Tipo de Usuário
 
 🔹 Inspetor
@@ -7,14 +12,16 @@
 - Dashboard pessoal de inspeções
 - Tela de execução de inspeção
 - Modal do assistente virtual
-- Visualizador de relatório
+- Geração, visualização e edição de relatórios
 
 🔹 Gestor de Equipe
 
 - Painel de equipe
-- Gerenciador de templates
+- Gerenciador de templates de inspeção
 - Tela de inspeções da equipe
 - Dashboard analítico (por inspetor, por projeto)
+- Visualizador de relatórios da equipe
+- Planos e cobrança
 
 🔹 Administrador SaaS
 
