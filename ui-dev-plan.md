@@ -3,7 +3,7 @@
 🔹 Geral
 - Tela de Cadastro
 - Tela de Login
-- Tela de recuperação de senha
+- Tela de Recuperação de senha
  
 ## Telas Necessárias por Tipo de Usuário
 
